@@ -7,6 +7,7 @@ use backend\models\ProjectSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * ProjectController implements the CRUD actions for Project model.
@@ -71,6 +72,7 @@ class ProjectController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('success', 'Successfully saved.');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -94,6 +96,7 @@ class ProjectController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Successfully updated.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
