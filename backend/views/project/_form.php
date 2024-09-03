@@ -17,10 +17,14 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'tech_stack')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'start_date')->textInput() ?>
-
-    <?= $form->field($model, 'end_date')->textInput() ?>
+    <br>
+    <?= $form->field($model, 'start_date')->widget(\yii\jui\DatePicker::class, [
+        'options' => ['readonly' => true],
+    ]) ?>
+    <br>
+    <?= $form->field($model, 'end_date')->widget(\yii\jui\DatePicker::class, [
+        'options' => ['readonly' => true],
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

@@ -28,14 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+            // ['class' => 'yii\grid\SerialColumn'],
+            // 'id',
             'name',
             'tech_stack:ntext',
-            'description:ntext',
+            // 'description:ntext',
             'start_date',
-            //'end_date',
+            'end_date',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Project $model, $key, $index, $column) {
