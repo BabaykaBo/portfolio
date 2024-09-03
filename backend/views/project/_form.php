@@ -9,9 +9,8 @@ use kartik\editors\Summernote;
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="project-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -31,6 +30,8 @@ use kartik\editors\Summernote;
     <?= $form->field($model, 'end_date')->widget(\yii\jui\DatePicker::class, [
         'options' => ['readonly' => true],
     ]) ?>
+
+    <?= $form->field($model, 'imageFile')->fileInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
