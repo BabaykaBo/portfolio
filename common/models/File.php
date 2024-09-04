@@ -68,4 +68,9 @@ class File extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Testimonial::class, ['customer_image_id' => 'id']);
     }
+
+    public function absoluteUrl()
+    {
+        return $this->base_url . DIRECTORY_SEPARATOR . $this->name;
+    }
 }

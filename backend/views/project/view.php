@@ -31,6 +31,31 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
+            [
+                'label' => Yii::t('app', 'Images'),
+                'format' => 'raw',
+                'value' => function ($model) {
+                    /**
+                     * @var common\models\Project
+                     */
+                    if (!$model->hasImages()) {
+                        return null;
+                    }
+
+                    $imagesHtml = "";
+                    foreach ($model->projectImages as $image) {
+                        $imagesHtml .= Html::img(
+                            $image->file->absoluteUrl(),
+                            [
+                                'alt' => 'Image',
+                                'height' => '200px'
+                            ]
+                        );
+                    }
+
+                    return $imagesHtml;
+                },
+            ],
             'tech_stack:raw',
             'description:raw',
             'start_date',

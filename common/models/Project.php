@@ -114,4 +114,9 @@ class Project extends \yii\db\ActiveRecord
             }
         });
     }
+
+    public function hasImages()
+    {
+        return count($this->projectImages) > 0;
+    }
 }
