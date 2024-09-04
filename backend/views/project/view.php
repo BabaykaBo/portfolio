@@ -48,7 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             $image->file->absoluteUrl(),
                             [
                                 'alt' => 'Image',
-                                'height' => '200px'
+                                'height' => '200px',
+                                'class' => 'project-view__image',
                             ]
                         );
                     }
