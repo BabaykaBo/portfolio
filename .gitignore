@@ -35,6 +35,8 @@ phpunit.phar
 /.vagrant
 
 /.vscode
+/.lsp
+/.clj-kondo
 
 # ignore generated files
 /frontend/web/index.php
