@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Project;
 use backend\models\ProjectSearch;
+use common\models\ProjectImage;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,6 +27,7 @@ class ProjectController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        // 'delete-project-image' => ['POST'],
                     ],
                 ],
             ]
@@ -71,8 +73,8 @@ class ProjectController extends Controller
         $model = new Project();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) ) {
-                $model->imageFile = UploadedFile::getInstance($model,'imageFile');
+            if ($model->load($this->request->post())) {
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
                 if ($model->save()) {
                     $model->saveImage();
                     Yii::$app->session->setFlash('success', 'Successfully saved.');
@@ -100,7 +102,7 @@ class ProjectController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post())) {
-            $model->imageFile = UploadedFile::getInstance($model,'imageFile');
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
 
             if ($model->save()) {
                 $model->saveImage();
@@ -126,6 +128,23 @@ class ProjectController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionDeleteProjectImage()
+    {
+        $image = ProjectImage::findOne($this->request->post('id'));
+        if (!$image) {
+            throw new NotFoundHttpException('No image found');
+        }
+
+        if ($image->file->delete()) {
+            $path = Yii::$app->params['uploads']['project'] . DIRECTORY_SEPARATOR . $image->file->name;
+            unlink($path);
+        }
+
+        Yii::$app->response->statusCode = 204;
+        return;
+
     }
 
     /**

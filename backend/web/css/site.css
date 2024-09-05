@@ -91,5 +91,9 @@ a.desc:after {
 
 .project-view__image, .project-form__image {
     display: block;
-    margin: 16px;
+    margin:  16px 0px 16px 0px;
+}
+
+.project-form__image-container {
+    margin-bottom: 16px;
 }
