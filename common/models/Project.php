@@ -120,4 +120,15 @@ class Project extends \yii\db\ActiveRecord
     {
         return count($this->projectImages) > 0;
     }
+
+    public function imageAbsoluteUrls()
+    {
+        $urls = [];
+
+        foreach ($this->projectImages as $image) {
+            $urls[] = $image->file->absoluteUrl();
+        }
+
+        return $urls;
+    }
 }

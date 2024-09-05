@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use kartik\editors\Summernote;
+use kartik\widgets\FileInput;
 
 /** @var yii\web\View $this */
 /** @var common\models\Project $model */
@@ -36,6 +37,15 @@ $this->registerJsFile(
     'options' => ['readonly' => true],
 ]) ?>
 
+<?= $form->field($model, 'imageFile')->widget(FileInput::class, [
+    'options' => ['accept' => 'image/*'],
+    'pluginOptions' => [
+        'initialPreview' => $model->imageAbsoluteUrls(),
+        'initialPreviewAsData' => true,
+        'showUpload' => false,
+    ]
+]); ?>
+
 <?php foreach ($model->projectImages as $image): ?>
     <div class="project-form__image-container" id="project-form__image-container-<?= $image->id ?>">
         <?= Html::img(
@@ -56,8 +66,6 @@ $this->registerJsFile(
     </div>
     
 <?php endforeach; ?>
-
-<?= $form->field($model, 'imageFile')->fileInput() ?>
 
 <div class="form-group">
     <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
