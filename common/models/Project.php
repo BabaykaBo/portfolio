@@ -100,7 +100,8 @@ class Project extends \yii\db\ActiveRecord
         Yii::$app->db->transaction(function($db) {
             $file = new File();
             $file->name = uniqid(true) . '.' . $this->imageFile->extension;
-            $file->base_url = Yii::$app->urlManager->createAbsoluteUrl(Yii::$app->params['uploads']['project']);
+            $file->path_url = Yii::$app->params['uploads']['project'];
+            $file->base_url = Yii::$app->urlManager->createAbsoluteUrl($file->path_url);
             $file->mime_type = mime_content_type($this->imageFile->tempName);
             $file->save();
     
