@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use \yii\web\UploadedFile;
+use \yii\imagine\Image;
 
 /**
  * This is the model class for table "project".
@@ -100,6 +101,9 @@ class Project extends \yii\db\ActiveRecord
     {
         Yii::$app->db->transaction(function($db) {
             foreach ($this->imageFiles as $imageFile) {
+                /**
+                 * @var $imageFile UploadedFile
+                 */
                 $file = new File();
                 $file->name = uniqid(true) . '.' . $imageFile->extension;
                 $file->path_url = Yii::$app->params['uploads']['project'];
@@ -111,8 +115,10 @@ class Project extends \yii\db\ActiveRecord
                 $projectImage->project_id = $this->id;
                 $projectImage->file_id = $file->id;
                 $projectImage->save();
+                
+                $thumbnail = Image::thumbnail($imageFile->tempName, null, 1000);
             
-                if (!$imageFile->saveAs($file->path_url . DIRECTORY_SEPARATOR . $file->name)) {
+                if (!$thumbnail->save($file->path_url . DIRECTORY_SEPARATOR . $file->name)) {
                     $db->transaction->rollBack();
                     break;
                 }
