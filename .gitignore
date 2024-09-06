@@ -50,3 +50,8 @@ phpunit.phar
 !/backend/web/uploads
 /backend/web/uploads/projects/*
 !/backend/web/uploads/projects
+
+/backend/web/testimonials/*
+!/backend/web/testimonials
+/backend/web/uploads/testimonials/*
+!/backend/web/uploads/testimonials

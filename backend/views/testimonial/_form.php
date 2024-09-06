@@ -1,7 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
+use kartik\widgets\FileInput;
+
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var common\models\Testimonial $model */
@@ -15,7 +18,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'project_id')->dropDownList($projects, ['prompt'=> '']) ?>
 
-    <?= $form->field($model, 'customer_image_id')->textInput() ?>
+    <?= $form->field($model, 'imageFile')->widget(FileInput::class, [
+    'options' => ['accept' => 'image/*'],
+    'pluginOptions' => [
+        'initialPreview' => $model->imageAbsoluteUrl(),
+        'initialPreviewAsData' => true,
+        'showUpload' => false,
+        // 'deleteUrl' => Url::to('delete-project-image'),
+        'initialPreviewConfig' => $model->imageConfig(),
+    ]
+]); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
