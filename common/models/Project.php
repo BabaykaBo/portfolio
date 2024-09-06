@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use \yii\web\UploadedFile;
 
 /**
  * This is the model class for table "project".
@@ -22,7 +23,7 @@ class Project extends \yii\db\ActiveRecord
     /**
      * @var \yii\web\UploadedFile
      */
-    public $imageFile;
+    public $imageFiles;
 
     /**
      * {@inheritdoc}
@@ -42,7 +43,7 @@ class Project extends \yii\db\ActiveRecord
             [['tech_stack', 'description'], 'string'],
             [['start_date', 'end_date'], 'safe'],
             [['name'], 'string', 'max' => 255],
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg']
+            [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10]
         ];
 
     }
@@ -95,24 +96,27 @@ class Project extends \yii\db\ActiveRecord
      * Save image for project
      * @return void
      */
-    public function saveImage()
+    public function saveImages()
     {
         Yii::$app->db->transaction(function($db) {
-            $file = new File();
-            $file->name = uniqid(true) . '.' . $this->imageFile->extension;
-            $file->path_url = Yii::$app->params['uploads']['project'];
-            $file->base_url = Yii::$app->urlManager->createAbsoluteUrl($file->path_url);
-            $file->mime_type = mime_content_type($this->imageFile->tempName);
-            $file->save();
-    
-            $projectImage = new ProjectImage();
-            $projectImage->project_id = $this->id;
-            $projectImage->file_id = $file->id;
-            $projectImage->save();
-          
-            if (!$this->imageFile->saveAs(Yii::$app->params['uploads']['project'] . DIRECTORY_SEPARATOR . $file->name)) {
-                $db->transaction->rollBack();
-            }
+            foreach ($this->imageFiles as $imageFile) {
+                $file = new File();
+                $file->name = uniqid(true) . '.' . $imageFile->extension;
+                $file->path_url = Yii::$app->params['uploads']['project'];
+                $file->base_url = Yii::$app->urlManager->createAbsoluteUrl($file->path_url);
+                $file->mime_type = mime_content_type($imageFile->tempName);
+                $file->save();
+        
+                $projectImage = new ProjectImage();
+                $projectImage->project_id = $this->id;
+                $projectImage->file_id = $file->id;
+                $projectImage->save();
+            
+                if (!$imageFile->saveAs($file->path_url . DIRECTORY_SEPARATOR . $file->name)) {
+                    $db->transaction->rollBack();
+                    break;
+                }
+            }  
         });
     }
 
@@ -130,5 +134,23 @@ class Project extends \yii\db\ActiveRecord
         }
 
         return $urls;
+    }
+
+    public function imageConfigs()
+    {
+        $configs = [];
+
+        foreach ($this->projectImages as $image) {
+            $configs[] = [
+                'key' => $image->id,
+            ];
+        }
+
+        return $configs;
+    }
+
+    public function loadUploadedImageFiles()
+    {
+        $this->imageFiles = UploadedFile::getInstances($this, 'imageFiles');
     }
 }

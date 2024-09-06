@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
+
 use kartik\form\ActiveForm;
 use kartik\editors\Summernote;
 use kartik\widgets\FileInput;
@@ -37,35 +39,16 @@ $this->registerJsFile(
     'options' => ['readonly' => true],
 ]) ?>
 
-<?= $form->field($model, 'imageFile')->widget(FileInput::class, [
-    'options' => ['accept' => 'image/*'],
+<?= $form->field($model, 'imageFiles[]')->widget(FileInput::class, [
+    'options' => ['accept' => 'image/*', 'multiple' => true],
     'pluginOptions' => [
         'initialPreview' => $model->imageAbsoluteUrls(),
         'initialPreviewAsData' => true,
         'showUpload' => false,
+        'deleteUrl' => Url::to('delete-project-image'),
+        'initialPreviewConfig' => $model->imageConfigs(),
     ]
 ]); ?>
-
-<?php foreach ($model->projectImages as $image): ?>
-    <div class="project-form__image-container" id="project-form__image-container-<?= $image->id ?>">
-        <?= Html::img(
-            $image->file->absoluteUrl(),
-            [
-                'alt' => 'Image',
-                'height' => '100px',
-                'class' => 'project-form__image',
-            ]
-        ); ?>
-
-        <?= Html::button(Yii::t('app', 'Delete'), ['
-            class' => 'btn btn-danger btn-delete-image',
-            'data-project-image-id' => $image->id,
-        ]) ?>
-
-        <div id="project-form__image-error-message-<?= $image->id ?>" class="text-danger"></div>
-    </div>
-    
-<?php endforeach; ?>
 
 <div class="form-group">
     <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

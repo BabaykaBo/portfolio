@@ -74,9 +74,9 @@ class ProjectController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+                $model->loadUploadedImageFiles();
                 if ($model->save()) {
-                    $model->saveImage();
+                    $model->saveImages();
                     Yii::$app->session->setFlash('success', 'Successfully saved.');
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -102,10 +102,9 @@ class ProjectController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post())) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-
+            $model->loadUploadedImageFiles();
             if ($model->save()) {
-                $model->saveImage();
+                $model->saveImages();
                 Yii::$app->session->setFlash('success', 'Successfully updated.');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -132,16 +131,17 @@ class ProjectController extends Controller
 
     public function actionDeleteProjectImage()
     {
-        $image = ProjectImage::findOne($this->request->post('id'));
+        $id = $this->request->post('key');
+        $image = ProjectImage::findOne($id);
         if (!$image) {
             throw new NotFoundHttpException('No image found');
         }
 
-        $image->file->delete();
+       if ( $image->file->delete()) {
+            return json_encode(null);
+       }
 
-        Yii::$app->response->statusCode = 204;
-        return;
-
+        return json_encode(['error' => true]);
     }
 
     /**
