@@ -41,13 +41,13 @@ class Testimonial extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['project_id', 'customer_image_id', 'title', 'customer_name', 'review', 'rating'], 'required'],
+            [['project_id', 'title', 'customer_name', 'review', 'rating'], 'required'],
             [['project_id', 'customer_image_id', 'rating'], 'integer'],
             [['review'], 'string'],
             [['title', 'customer_name'], 'string', 'max' => 255],
             [['customer_image_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::class, 'targetAttribute' => ['customer_image_id' => 'id']],
             [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Project::class, 'targetAttribute' => ['project_id' => 'id']],
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg']
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg']
         ];
     }
 
@@ -95,35 +95,38 @@ class Testimonial extends \yii\db\ActiveRecord
 
     public function saveImage()
     {
-        $db = Yii::$app->db;
-        $transaction = $db->beginTransaction();
-
-        try {
-            $file = new File();
-            $file->name = uniqid(true) . '.' . $this->imageFile->extension;
-            $file->path_url = Yii::$app->params['uploads']['testimonial'];
-            $file->base_url = Yii::$app->urlManager->createAbsoluteUrl($file->path_url);
-            $file->mime_type = mime_content_type($this->imageFile->tempName);
-            $file->save();                                      
-
-            $this->customer_image_id = $file->id;
+        if ($this->imageFile) {
+            $db = Yii::$app->db;
+            $transaction = $db->beginTransaction();
+    
+            try {
+                $file = new File();
+                $file->name = uniqid(true) . '.' . $this->imageFile->extension;
+                $file->path_url = Yii::$app->params['uploads']['testimonial'];
+                $file->base_url = Yii::$app->urlManager->createAbsoluteUrl($file->path_url);
+                $file->mime_type = mime_content_type($this->imageFile->tempName);
+                $file->save();                                      
+    
+                $this->customer_image_id = $file->id;
+                
+                $thumbnail = Image::thumbnail($this->imageFile->tempName, null, 1000);
             
-            $thumbnail = Image::thumbnail($this->imageFile->tempName, null, 1000);
-        
-            if (!$thumbnail->save($file->path_url . DIRECTORY_SEPARATOR . $file->name)) {
-                $this->addError('imageFile', Yii::t('app','Failed to save images'));
+                if (!$thumbnail->save($file->path_url . DIRECTORY_SEPARATOR . $file->name)) {
+                    $this->addError('imageFile', Yii::t('app','Failed to save images'));
+                    return false;
+                }
+                $transaction->commit();
+                
+            } catch (\Throwable $th) {
+                $db->transaction->rollBack();
+                $this->addError('imageFile', Yii::t('app','Failed to save images') . ' ( ' . $th->getMessage() . ' ) ');
+    
                 return false;
             }
-            $transaction->commit();
-            
-        } catch (\Throwable $th) {
-            $db->transaction->rollBack();
-            $this->addError('imageFile', Yii::t('app','Failed to save images') . ' ( ' . $th->getMessage() . ' ) ');
-
-            return false;
         }
 
         return true;
+        
     }
 
     public function imageAbsoluteUrl()
