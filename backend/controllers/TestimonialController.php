@@ -6,6 +6,7 @@ use Yii;
 
 use common\models\Testimonial;
 use common\models\Project;
+use common\models\File;
 
 use backend\models\TestimonialSearch;
 
@@ -128,6 +129,18 @@ class TestimonialController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionDeleteCustomerImage()
+    {
+        $id = $this->request->post('key');
+        $file = File::findOne($id);
+        if ($file && $file->delete()) {
+            return json_encode(null);
+        }
+
+        return json_encode(['error' => true]);
+
     }
 
     /**

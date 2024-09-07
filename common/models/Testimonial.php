@@ -58,8 +58,8 @@ class Testimonial extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'project_id' => Yii::t('app', 'Project ID'),
-            'customer_image_id' => Yii::t('app', 'Customer Image ID'),
+            'project_id' => Yii::t('app', 'Project'),
+            'customer_image_id' => Yii::t('app', 'Customer Image'),
             'title' => Yii::t('app', 'Title'),
             'customer_name' => Yii::t('app', 'Customer Name'),
             'review' => Yii::t('app', 'Review'),
@@ -104,7 +104,7 @@ class Testimonial extends \yii\db\ActiveRecord
             $file->path_url = Yii::$app->params['uploads']['testimonial'];
             $file->base_url = Yii::$app->urlManager->createAbsoluteUrl($file->path_url);
             $file->mime_type = mime_content_type($this->imageFile->tempName);
-            $file->save();
+            $file->save();                                      
 
             $this->customer_image_id = $file->id;
             
@@ -133,7 +133,24 @@ class Testimonial extends \yii\db\ActiveRecord
 
     public function imageConfig()
     {
-        return $this->customerImage ?  ['key' => $this->customerImage->id] : [];
+        return $this->customerImage ?  [['key' => $this->customerImage->id]]: [];
+    }
+
+    public function delete()
+    {
+        $db = Yii::$app->db;
+        $transaction = $db->beginTransaction();
+
+        try {
+            $this->customerImage->deleteInternal();
+            parent::delete();
+            $transaction->commit();
+            return true;
+        } catch (\Throwable $th){
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('app', 'Failed to delete! ( ' . $th->getMessage() . ' )');
+            return false;
+        }
     }
 
 }
