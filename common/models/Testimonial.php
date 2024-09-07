@@ -134,6 +134,7 @@ class Testimonial extends \yii\db\ActiveRecord
     public function imageConfig()
     {
         return $this->customerImage ?  [['key' => $this->customerImage->id]]: [];
+
     }
 
     public function delete()
