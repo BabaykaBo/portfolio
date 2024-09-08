@@ -1,10 +1,10 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Project $model */
+/** @var boolean $visible */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Projects'), 'url' => ['index']];
@@ -66,5 +66,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'end_date',
         ],
     ]) ?>
-
+    <?= $this->render('/testimonial/_gridview', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+        'projects' => $projects,
+        'visible' => $visible,
+    ]) ?>
 </div>

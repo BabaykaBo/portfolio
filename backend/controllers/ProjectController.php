@@ -3,13 +3,20 @@
 namespace backend\controllers;
 
 use common\models\Project;
-use backend\models\ProjectSearch;
 use common\models\ProjectImage;
+
+use backend\models\ProjectSearch;
+use backend\models\TestimonialSearch;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+
 use yii\filters\VerbFilter;
+
 use Yii;
-use \yii\web\UploadedFile;
+
+use yii\helpers\ArrayHelper;
+
 /**
  * ProjectController implements the CRUD actions for Project model.
  */
@@ -58,8 +65,16 @@ class ProjectController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new TestimonialSearch();
+        $searchModel->project_id = $id;
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'projects' => ArrayHelper::map(Project::find()->all(), 'id', 'name') ,
+            'visible' => false,
         ]);
     }
 

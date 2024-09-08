@@ -52,6 +52,7 @@ class TestimonialController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'projects' => ArrayHelper::map(Project::find()->all(), 'id', 'name') ,
+            'visible' => true,
         ]);
     }
 
