@@ -30,7 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             // 'id',
-            'project_id',
+            [
+                'attribute' => 'project_id',
+                'format' => 'raw',
+                'value'=> function ($model) {
+                    return Html::a($model->project->name, ['project/view', 'id' => $model->project_id]);
+                }
+            ],
             [
                 'attribute'=> 'customer_image_id',
                 'format' => 'raw',

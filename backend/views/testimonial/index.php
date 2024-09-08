@@ -6,9 +6,11 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /** @var yii\web\View $this */
 /** @var backend\models\TestimonialSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
+/** @var array $projects */
 
 $this->title = Yii::t('app', 'Testimonials');
 $this->params['breadcrumbs'][] = $this->title;
@@ -28,15 +30,34 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            // ['class' => 'yii\grid\SerialColumn'],
+            // 'id',
+            [
+                'attribute' => 'project_id',
+                'format' => 'raw',
+                'filter' => $projects,
+                'value'=> function ($model) {
+                    return Html::a($model->project->name, ['project/view', 'id' => $model->project_id]);
+                }
+            ],
+            [
+                'attribute'=> 'customer_image_id',
+                'format' => 'raw',
+                'value'=> function ($model) {
+                    if (!$model->customerImage){
+                        return null;
+                    }
 
-            'id',
-            'project_id',
-            'customer_image_id',
+                    return Html::img($model->customerImage->absoluteUrl(),[
+                        'alt' => $model->customer_name,
+                        'height' => 75,
+                    ]);
+                }
+            ],
             'title',
             'customer_name',
             //'review:ntext',
-            //'rating',
+            'rating',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Testimonial $model, $key, $index, $column) {
