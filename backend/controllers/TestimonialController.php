@@ -84,6 +84,7 @@ class TestimonialController extends Controller
                 }
             }
         } else {
+            $model->project_id = $this->request->get('project_id');
             $model->loadDefaultValues();
         }
 
