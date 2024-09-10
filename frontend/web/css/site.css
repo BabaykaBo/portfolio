@@ -101,3 +101,8 @@ a.desc:after {
 {
     text-decoration: none;
 }
+
+.site-index__photo {
+    width: 100%;
+    max-width: 400px;
+}

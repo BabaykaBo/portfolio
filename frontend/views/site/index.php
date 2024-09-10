@@ -1,19 +1,25 @@
 <?php
-
+use yii\helpers\Html;
 /** @var yii\web\View $this */
 
-$this->title = 'My Yii Application';
+$this->title = Yii::$app->name . ' - My Portfolio';
 ?>
 <div class="site-index">
     <div class="p-5 mb-4 bg-transparent rounded-3">
         <div class="container-fluid py-5 text-center">
-            <h1 class="display-4">Congratulations!</h1>
-            <p class="fs-5 fw-light">You have successfully created your Yii-powered application.</p>
-            <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
+            <?= Html::img('@web/images/photo.png', [
+                'alt' => Yii::t('app','My profile photo'),
+                'class' => 'site-index__photo',
+            ]) ?>
+            <h1 class="display-4"><?= Yii::t('app', 'My name is Oleh.') ?></h1>
+            <p class="fs-5 fw-light"><?= Yii::t('app', 'Go for Web Development.') ?></p>
+            <p><?= Html::a(Yii::t('app', 'See My Works'), 'projects', $options = [
+                'class'=> 'btn btn-primary'
+            ]) ?></p>
         </div>
     </div>
 
-    <div class="body-content">
+   <!-- <div class="body-content">
 
         <div class="row">
             <div class="col-lg-4">
@@ -48,5 +54,5 @@ $this->title = 'My Yii Application';
             </div>
         </div>
 
-    </div>
+    </div> -->
 </div>

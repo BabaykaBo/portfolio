@@ -51,7 +51,7 @@ phpunit.phar
 /backend/web/uploads/projects/*
 !/backend/web/uploads/projects
 
-/backend/web/testimonials/*
-!/backend/web/testimonials
 /backend/web/uploads/testimonials/*
 !/backend/web/uploads/testimonials
+/frontend/web/images/*
+!/frontend/web/images
