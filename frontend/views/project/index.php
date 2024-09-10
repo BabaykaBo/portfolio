@@ -23,10 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
-        'itemOptions' => ['class' => 'item'],
-        'itemView' => function ($model, $key, $index, $widget) {
-            return Html::a(Html::encode($model->name), ['view', 'id' => $model->id]);
-        },
+        'itemOptions' => ['class' => 'project'],
+        'itemView' => '_project',
+        'layout' => "<div class=\"project-items\">{items}</div>\n{pager}"
     ]) ?>
 
     <?php Pjax::end(); ?>
