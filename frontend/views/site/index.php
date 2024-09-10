@@ -13,7 +13,7 @@ $this->title = Yii::$app->name . ' - My Portfolio';
             ]) ?>
             <h1 class="display-4"><?= Yii::t('app', 'My name is Oleh.') ?></h1>
             <p class="fs-5 fw-light"><?= Yii::t('app', 'Go for Web Development.') ?></p>
-            <p><?= Html::a(Yii::t('app', 'See My Works'), 'projects', $options = [
+            <p><?= Html::a(Yii::t('app', 'See My Works'), 'project', $options = [
                 'class'=> 'btn btn-primary'
             ]) ?></p>
         </div>
