@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use \yii\web\UploadedFile;
 use \yii\imagine\Image;
+use \yii\helpers\Html;
 
 /**
  * This is the model class for table "project".
@@ -178,5 +179,16 @@ class Project extends \yii\db\ActiveRecord
             Yii::$app->session->setFlash('app', 'Failed to delete! ( ' . $th->getMessage() . ' )');
             return false;
         }
+    }
+
+    public function carouselImages()
+    {
+        return array_map(function($projectImage) {
+            return Html::img($projectImage->file->absoluteUrl(),
+        [
+            'alt' => $this->name,
+            'class' => 'project-view__carousel-images'
+        ]);
+        }, $this->projectImages);
     }
 }

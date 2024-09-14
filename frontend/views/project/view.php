@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\bootstrap5\Carousel;
 
 /** @var yii\web\View $this */
 /** @var common\models\Project $model */
@@ -15,16 +15,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            // 'id',
-            'name',
-            'tech_stack:raw',
-            'description:raw',
-            'start_date',
-            'end_date',
-        ],
-    ]) ?>
+    <div class="project-view__dates">
+        <?= $model->start_date . " " . Yii::t("app","to") . " " . $model->end_date ?>
+    </div>
+
+    <div class="project-view__tech-stack">
+        <span class="font-weight-bold">
+            <?= Yii::t('app', 'Tech Stack: '); ?>
+        </span>
+        <?= $model->tech_stack ?>
+    </div>
+
+    <div class="project-view__description">
+     <?= $model->description ?>
+    </div>
+
+    <?= Carousel::widget([
+    'items' => $model->carouselImages(),
+    'options' => ['class' => 'project-view__carousel']
+]); ?>
 
 </div>

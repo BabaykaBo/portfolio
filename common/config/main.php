@@ -11,6 +11,9 @@ return [
         ],
         'formatter' => [
             'dateFormat' => 'yyyy-MM-dd'
+        ],
+        'assetManager' => [
+            'appendTimestamp' => true,
         ]
     ],
 ];

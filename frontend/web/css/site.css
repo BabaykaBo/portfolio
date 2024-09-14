@@ -133,3 +133,20 @@ a.desc:after {
     display: flex;
     flex-wrap: wrap;
 }
+
+.font-weight-bold {
+    font-weight: bold;
+}
+
+.project-view__dates, .project-view__tech-stack, .project-view__description {
+    margin-bottom: 16px;
+}
+
+.project-view__carousel {
+    margin-bottom: 24px;
+}
+
+.project-view__carousel-images {
+   object-fit: cover;
+   width: 100%;
+}
