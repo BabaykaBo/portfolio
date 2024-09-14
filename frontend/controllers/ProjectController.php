@@ -1,10 +1,12 @@
 <?php
 
 namespace frontend\controllers;
+use common\models\Testimonial;
 use Yii;
 
 use common\models\Project;
 use frontend\models\ProjectSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -56,8 +58,17 @@ class ProjectController extends Controller
      */
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Testimonial::find()
+                ->where(['project_id' => $id]),
+            'pagination' => [
+                'pageSize' => 5,
+            ]
+        ]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
         ]);
     }
 

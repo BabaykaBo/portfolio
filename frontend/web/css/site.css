@@ -149,4 +149,16 @@ a.desc:after {
 .project-view__carousel-images {
    object-fit: cover;
    width: 100%;
+   max-height: 700px;
+}
+
+.project-view__testimonial {
+    margin-bottom: 30px;
+}
+
+.project-view__testimonial-image {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 50%;
 }
