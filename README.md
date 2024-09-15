@@ -26,3 +26,25 @@ php init
 ```commandline
 php yii migrate
 ```
+6. It is Yii advanced template, so you need to set Apache (or what you prefer). Apache portfolio.conf file example:
+```
+<VirtualHost *:80>
+     ServerAdmin admin@portfolio.test
+     ServerName portfolio.test
+     DocumentRoot /var/www/html/portfolio
+     ErrorLog /var/log/httpd/portfolio.log
+     CustomLog /var/log/httpd/portfolio-access.log combined
+    
+    <Directory "/var/www/html/portfolio">
+        AllowOverride All
+        Require all granted  
+    </Directory>
+  
+  <FilesMatch \.(php|phar)$>
+    SetHandler "proxy:unix:/var/run/php-fpm/www.sock|fcgi://localhost"
+  </FilesMatch>
+
+</VirtualHost>
+```
+
+P.S. Not finished
