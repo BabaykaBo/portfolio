@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\SluggableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "post".
@@ -31,10 +33,22 @@ class Post extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'body', 'slug', 'is_published', 'created_at'], 'required'],
+            [['title', 'body', 'is_published'], 'required'],
             [['body', 'slug'], 'string'],
             [['is_published', 'created_at', 'updated_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            [
+                'class' => SluggableBehavior::class,
+                'attribute' => 'title',
+                'ensureUnique' => true,
+            ]
         ];
     }
 
