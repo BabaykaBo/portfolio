@@ -2,10 +2,8 @@
 
 use common\models\Post;
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\grid\ActionColumn;
 use yii\widgets\ListView;
-use yii\widgets\Pjax;
+
 /** @var yii\web\View $this */
 /** @var frontend\modules\blog\models\PostSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -22,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'itemOptions' => ['class' => 'post'],
         'layout' => "{items}\n{pager}",
         'itemView' => function ($model, $key, $index, $widget) {
-            return Html::a(Html::encode($model->title), ['view', 'id' => $model->id]);
+            return Html::a(Html::encode($model->title), ['/blog/post/'.$model->slug]);
         },
     ]) ?>
 

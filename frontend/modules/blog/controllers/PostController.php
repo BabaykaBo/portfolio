@@ -33,27 +33,27 @@ class PostController extends Controller
 
     /**
      * Displays a single Post model.
-     * @param int $id ID
+     * @param string $slug Slug
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($slug)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($slug),
         ]);
     }
 
     /**
      * Finds the Post model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
+     * @param string $slug Slug
      * @return Post the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($slug)
     {
-        if (($model = Post::findOne(['id' => $id])) !== null) {
+        if (($model = Post::findOne(['slug' => $slug])) !== null) {
             return $model;
         }
 
