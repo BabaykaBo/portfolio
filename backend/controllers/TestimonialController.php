@@ -12,7 +12,10 @@ use backend\models\TestimonialSearch;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+
 use yii\helpers\ArrayHelper;
 
 /**
@@ -28,6 +31,15 @@ class TestimonialController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -51,7 +63,7 @@ class TestimonialController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'projects' => ArrayHelper::map(Project::find()->all(), 'id', 'name') ,
+            'projects' => ArrayHelper::map(Project::find()->all(), 'id', 'name'),
             'visible' => true,
         ]);
     }

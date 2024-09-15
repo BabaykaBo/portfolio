@@ -8,6 +8,7 @@ use common\models\ProjectImage;
 use backend\models\ProjectSearch;
 use backend\models\TestimonialSearch;
 
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -30,11 +31,20 @@ class ProjectController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
-                        // 'delete-project-image' => ['POST'],
+                        'delete-project-image' => ['POST'],
                     ],
                 ],
             ]
