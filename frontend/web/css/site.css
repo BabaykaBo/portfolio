@@ -162,3 +162,7 @@ a.desc:after {
     object-fit: cover;
     border-radius: 50%;
 }
+
+.post {
+    margin-bottom: 8px;
+}
