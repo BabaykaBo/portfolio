@@ -36,7 +36,12 @@ class ProjectController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['@'],
+                            'roles' => ['manageProjects'],
+                        ],
+                        [
+                            'actions' => ['view'],
+                            'allow' => true,
+                            'roles' => ['viewProject'],
                         ],
                     ],
                 ],

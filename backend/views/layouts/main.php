@@ -36,9 +36,21 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => Yii::t('app','Projects'), 'url' => ['/project/index']],
-        ['label' => Yii::t('app','Testimonials'), 'url' => ['/testimonial/index']],
-        ['label' => Yii::t('app','Blog Posts'), 'url' => ['/blog/post/index']],
+        [
+            'label' => Yii::t('app','Projects'), 
+            'url' => ['/project/index'],
+            'visible' => Yii::$app->user->can('manageProjects')
+        ],
+        [
+            'label' => Yii::t('app','Testimonials'), 
+            'url' => ['/testimonial/index'],
+            'visible' => Yii::$app->user->can('manageTestimonials')
+        ],
+        [
+            'label' => Yii::t('app','Blog Posts'), 
+            'url' => ['/blog/post/index'],
+            'visible' => Yii::$app->user->can('manageBlog')
+        ],
 
     ];
     if (Yii::$app->user->isGuest) {
