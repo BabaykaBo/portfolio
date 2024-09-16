@@ -41,7 +41,7 @@ class m240915_115742_init_rbac extends Migration
         $auth->addChild($admin, $manageProjects);
         $auth->addChild($admin, $manageBlog);
 
-        $auth->assign($admin, 1);
+        // $auth->assign($admin, 1);
     }
 
     /**

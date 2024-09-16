@@ -51,8 +51,14 @@ AppAsset::register($this);
             'url' => ['/blog/post/index'],
             'visible' => Yii::$app->user->can('manageBlog')
         ],
+        [
+            'label' => Yii::t('app','Create User'), 
+            'url' => ['/site/signup'],
+            'visible' => Yii::$app->user->can('createUsers')
+        ],
 
     ];
+    
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     }     
