@@ -52,7 +52,7 @@ I use Fedora, so I have set `/etc/hosts`:
 ```
 127.0.0.1  portfolio.test
 ```
-7. Open your project in browser, you must see signup page.
+7. Open your project in browser with route `backend/web/`, you must see signup page.
 
 ### Features:
 You have two apps at project: admin panel (backend) and site for showing your portfolio (frontend).
