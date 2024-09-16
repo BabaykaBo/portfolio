@@ -7,6 +7,7 @@ Project for portfolio website.
 * Yii2
 * Composer 2.4.1
 * MySQL 8.0 / MariaDB 15.1
+* Apache2
 
 ### Installation:
 
@@ -47,4 +48,18 @@ php yii migrate
 </VirtualHost>
 ```
 
-P.S. Not finished
+I use Fedora, so I have set `/etc/hosts`:
+```
+127.0.0.1  portfolio.test
+```
+7. Open your project in browser, you must see signup page.
+
+### Features:
+You have two apps at project: admin panel (backend) and site for showing your portfolio (frontend).
+
+#### Frontend
+* Watching projects and blog.
+
+#### Backend
+* Creating users with different roles (Admin and Testimonial Manager)
+* Manage your projects, testimonials and blog posts.
