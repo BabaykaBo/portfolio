@@ -9,18 +9,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 1. Встановлюємо PHP та інструменти
+      # 1. Налаштування PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          tools: cs2pr, phpcs
+          # Важливо для Yii2 мати розширення, які вимагає фреймворк
+          extensions: mbstring, intl, pdo, pdo_mysql 
+          tools: cs2pr, phpcs, composer:v2
 
-      # 2. Явна перевірка синтаксису (Lint)
+      # 2. Встановлення залежностей (Критично для Yii2)
+      # Без цього може не працювати валідація, якщо у вас є кастомні правила в vendor
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      # 3. Перевірка синтаксису (Lint)
+      # Ми явно вказуємо папки Yii2, щоб не сканувати vendor/ або vagrant/
       - name: PHP Syntax Check
-        run: find ./src -name "*.php" -print0 | xargs -0 -n 1 -P 4 php -l
+        run: find backend common console frontend -name "*.php" -print0 | xargs -0 -n 1 -P 4 php -l
 
-      # 3. Явна перевірка стандартів (Code Sniffer)
-      # Тут ми ПРЯМО кажемо: "перевір папку src/"
+      # 4. Перевірка стандартів коду (Code Sniffer)
+      # Вказуємо ті самі папки. 
+      # Якщо у вас є файл конфігу phpcs.xml в корені, приберіть прапорець --standard=PSR12
       - name: PHP Code Sniffer
-        run: phpcs -q --report=checkstyle src/ | cs2pr
+        run: phpcs -q --report=checkstyle --standard=PSR12 backend common console frontend | cs2pr
