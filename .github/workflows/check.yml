@@ -13,6 +13,9 @@ jobs:
       # Переконайтеся, що цей action підтримує PHP 8.3 всередині контейнера
       #- uses: Novusvetus/action-php_codesniffer@1.2.17
       - uses: php-actions/phpcs@v1
+        with:
+          path: backend/, common/, frontend/
+          php_version: 8.3
       - uses: Firehed/lint-php-action@v1
         with:
           php-version: '8.3' # Краще брати версію в лапки
