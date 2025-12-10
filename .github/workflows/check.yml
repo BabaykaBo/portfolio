@@ -1,5 +1,5 @@
 name: Check
-on: 
+on:
   pull_request:
   workflow_dispatch:
 
@@ -7,15 +7,20 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      # Виправлено версію на v4
       - uses: actions/checkout@v4
-      #- uses: actions/cache@v4.3.0
-      # Переконайтеся, що цей action підтримує PHP 8.3 всередині контейнера
-      #- uses: Novusvetus/action-php_codesniffer@1.2.17
-      - uses: php-actions/phpcs@v1
+
+      # 1. Встановлюємо PHP та інструменти
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          path: backend/, common/, frontend/
-          php_version: 8.3
-      - uses: Firehed/lint-php-action@v1
-        with:
-          php-version: '8.3' # Краще брати версію в лапки
+          php-version: '8.3'
+          tools: cs2pr, phpcs
+
+      # 2. Явна перевірка синтаксису (Lint)
+      - name: PHP Syntax Check
+        run: find ./src -name "*.php" -print0 | xargs -0 -n 1 -P 4 php -l
+
+      # 3. Явна перевірка стандартів (Code Sniffer)
+      # Тут ми ПРЯМО кажемо: "перевір папку src/"
+      - name: PHP Code Sniffer
+        run: phpcs -q --report=checkstyle src/ | cs2pr
